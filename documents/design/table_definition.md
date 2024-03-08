@@ -16,11 +16,17 @@
 | フィールド名 | データ型 | キー | 説明     | null許容 |
 |----------|-------|----|--------|-------|
 | id       | bigint | PK | 製品ID   | ×     |
+| imageId  | string | FK | 画像ID   | ×     |
 | name     | string |    | 製品名   | ○     |
 | size     | string |    | サイズ   | ○     |
 | price    | bigint |    | 価格     | ○     |
-| image    | string |    | 画像   | ×     |
 | remark   | string |    | 備考       | ○     |
+
+### Image テーブル
+| フィールド名 | データ型 | キー | 説明       | null許容 |
+|----------|-------|----|----------|-------|
+| id       | bigint | PK | 画像ID | ×     |
+| image    | string |    | 画像       | ×     |
 
 ### Template テーブル
 | フィールド名 | データ型 | キー | 説明       | null許容 |

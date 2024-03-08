@@ -42,8 +42,13 @@ erDiagram
         string name "製品名"
         string size "サイズ"
         bigint price "価格"
-        string image "画像"
         string remark "備考"
+        bigint imageId "画像ID"
+    }
+
+    Image {
+        bigint id PK "画像ID"
+        string image "画像"
     }
     Template {
         bigint id PK "テンプレートID"
@@ -61,6 +66,7 @@ erDiagram
     Product ||--o{ Catalog_section : ""
     Catalog ||--o{ Catalog_section : ""
     Template ||--o{ Catalog_section : ""
+    Product ||--o{ Image : ""
 ```
 
 ## テーブル定義書
