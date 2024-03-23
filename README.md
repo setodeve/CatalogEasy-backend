@@ -36,7 +36,8 @@ erDiagram
         bigint id PK "製品ID"
         string name "製品名"
         string size "サイズ"
-        bigint price "価格"
+        bigint tradePrice "卸価格"
+        bigint retailPrice "小売価格"
         string remark "備考"
         bigint imageId "画像ID"
     }
@@ -83,11 +84,18 @@ erDiagram
 | フィールド名 | データ型 | キー | 説明     | null許容 |
 |----------|-------|----|--------|-------|
 | id       | bigint | PK | 製品ID   | ×     |
+| imageId  | string | FK | 画像ID   | ×     |
 | name     | string |    | 製品名   | ○     |
 | size     | string |    | サイズ   | ○     |
-| price    | bigint |    | 価格     | ○     |
-| image    | string |    | 画像   | ×     |
+| tradePrice    | bigint |    | 卸価格     | ○     |
+| retailprice    | bigint |    | 小売価格     | ○     |
 | remark   | string |    | 備考       | ○     |
+
+### Image テーブル
+| フィールド名 | データ型 | キー | 説明       | null許容 |
+|----------|-------|----|----------|-------|
+| id       | bigint | PK | 画像ID | ×     |
+| image    | string |    | 画像       | ×     |
 
 ### Template テーブル
 | フィールド名 | データ型 | キー | 説明       | null許容 |
@@ -107,4 +115,4 @@ erDiagram
 
 
 ## アーキテクチャ図
-<img src="arch.png"></img> 
+<img src="./documents/design/arch.png"></img> 

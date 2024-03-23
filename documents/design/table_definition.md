@@ -19,7 +19,8 @@
 | imageId  | string | FK | 画像ID   | ×     |
 | name     | string |    | 製品名   | ○     |
 | size     | string |    | サイズ   | ○     |
-| price    | bigint |    | 価格     | ○     |
+| tradePrice    | bigint |    | 卸価格     | ○     |
+| retailprice    | bigint |    | 小売価格     | ○     |
 | remark   | string |    | 備考       | ○     |
 
 ### Image テーブル
