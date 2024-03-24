@@ -39,7 +39,7 @@ erDiagram
         bigint tradePrice "卸価格"
         bigint retailPrice "小売価格"
         string remark "備考"
-        bigint imageId "画像ID"
+        references imageId "画像ID"
     }
 
     Image {
@@ -52,9 +52,9 @@ erDiagram
     }
     Catalog_section {
         bigint id PK "ID"
-        bigint templateId FK "テンプレートID"
-        bigint catalogId FK "カタログID"
-        bigint productId FK "製品ID"
+        references templateId FK "テンプレートID"
+        references catalogId FK "カタログID"
+        references productId FK "製品ID"
         bigint page_number  "ページNo"
         bigint page_place_number  "ページプレイスNo"
     }
@@ -79,12 +79,13 @@ erDiagram
 |----------|-------|----|----------|-------|
 | id       | bigint | PK | カタログID   | ×     |
 | name     | string |    | カタログ名   | ×     |
+| userId  | references | FK |ユーザーID   | ×     |
 
 ### Product テーブル
 | フィールド名 | データ型 | キー | 説明     | null許容 |
 |----------|-------|----|--------|-------|
 | id       | bigint | PK | 製品ID   | ×     |
-| imageId  | string | FK | 画像ID   | ×     |
+| imageId  | references | FK | 画像ID   | ×     |
 | name     | string |    | 製品名   | ○     |
 | size     | string |    | サイズ   | ○     |
 | tradePrice    | bigint |    | 卸価格     | ○     |
@@ -107,12 +108,11 @@ erDiagram
 | フィールド名   | データ型 | キー | 説明       | null許容 |
 |------------|-------|----|----------|-------|
 | id         | bigint | PK | ID       | ×     |
-| templateId | bigint | FK | テンプレートID | ×     |
-| catalogId  | bigint | FK | カタログID   | ×     |
-| productId  | bigint | FK | 製品ID   | ×     |
+| templateId | references | FK | テンプレートID | ×     |
+| catalogId  | references | FK | カタログID   | ×     |
+| productId  | references | FK | 製品ID   | ×     |
 | page_number  | bigint |  | ページNo   | ×     |
 | page_place_number  | bigint |  | ページプレイスNo   | ×     |
-
 
 ## アーキテクチャ図
 <img src="./documents/design/arch.png"></img> 

@@ -11,12 +11,13 @@
 |----------|-------|----|----------|-------|
 | id       | bigint | PK | カタログID   | ×     |
 | name     | string |    | カタログ名   | ×     |
+| userId  | references | FK |ユーザーID   | ×     |
 
 ### Product テーブル
 | フィールド名 | データ型 | キー | 説明     | null許容 |
 |----------|-------|----|--------|-------|
 | id       | bigint | PK | 製品ID   | ×     |
-| imageId  | string | FK | 画像ID   | ×     |
+| imageId  | references | FK | 画像ID   | ×     |
 | name     | string |    | 製品名   | ○     |
 | size     | string |    | サイズ   | ○     |
 | tradePrice    | bigint |    | 卸価格     | ○     |
@@ -39,8 +40,8 @@
 | フィールド名   | データ型 | キー | 説明       | null許容 |
 |------------|-------|----|----------|-------|
 | id         | bigint | PK | ID       | ×     |
-| templateId | bigint | FK | テンプレートID | ×     |
-| catalogId  | bigint | FK | カタログID   | ×     |
-| productId  | bigint | FK | 製品ID   | ×     |
+| templateId | references | FK | テンプレートID | ×     |
+| catalogId  | references | FK | カタログID   | ×     |
+| productId  | references | FK | 製品ID   | ×     |
 | page_number  | bigint |  | ページNo   | ×     |
 | page_place_number  | bigint |  | ページプレイスNo   | ×     |
