@@ -12,4 +12,4 @@ RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 8080
 
-CMD ["rails", "server", "-b", "0.0.0.0", "-p", "8080"]
+# CMD ["rails", "server", "-b", "0.0.0.0", "-p", "8080"]
