@@ -17,7 +17,7 @@ erDiagram
         bigint tradePrice "卸価格"
         bigint retailPrice "小売価格"
         string remark "備考"
-        bigint imageId "画像ID"
+        references imageId "画像ID"
     }
 
     Image {
@@ -30,9 +30,9 @@ erDiagram
     }
     Catalog_section {
         bigint id PK "ID"
-        bigint templateId FK "テンプレートID"
-        bigint catalogId FK "カタログID"
-        bigint productId FK "製品ID"
+        references templateId FK "テンプレートID"
+        references catalogId FK "カタログID"
+        references productId FK "製品ID"
         bigint page_number  "ページNo"
         bigint page_place_number  "ページプレイスNo"
     }
