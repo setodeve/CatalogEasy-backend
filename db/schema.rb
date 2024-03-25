@@ -41,10 +41,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_24_043221) do
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "size", null: false
-    t.bigint "tradePrice"
-    t.bigint "retailPrice"
+    t.bigint "trade_price"
+    t.bigint "retail_price"
     t.string "remark"
-    t.bigint "image_id", null: false
+    t.bigint "image_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["image_id"], name: "index_products_on_image_id"

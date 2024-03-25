@@ -11,17 +11,17 @@
 |----------|-------|----|----------|-------|
 | id       | bigint | PK | カタログID   | ×     |
 | name     | string |    | カタログ名   | ×     |
-| userId  | references | FK |ユーザーID   | ×     |
+| user_id  | references | FK |ユーザーID   | ×     |
 
 ### Product テーブル
 | フィールド名 | データ型 | キー | 説明     | null許容 |
 |----------|-------|----|--------|-------|
 | id       | bigint | PK | 製品ID   | ×     |
-| imageId  | references | FK | 画像ID   | ×     |
+| image_id  | references | FK | 画像ID   | ○     |
 | name     | string |    | 製品名   | ○     |
 | size     | string |    | サイズ   | ○     |
-| tradePrice    | bigint |    | 卸価格     | ○     |
-| retailprice    | bigint |    | 小売価格     | ○     |
+| trade_price    | bigint |    | 卸価格     | ○     |
+| retail_price    | bigint |    | 小売価格     | ○     |
 | remark   | string |    | 備考       | ○     |
 
 ### Image テーブル
@@ -40,8 +40,8 @@
 | フィールド名   | データ型 | キー | 説明       | null許容 |
 |------------|-------|----|----------|-------|
 | id         | bigint | PK | ID       | ×     |
-| templateId | references | FK | テンプレートID | ×     |
-| catalogId  | references | FK | カタログID   | ×     |
-| productId  | references | FK | 製品ID   | ×     |
+| template_id | references | FK | テンプレートID | ×     |
+| catalog_id  | references | FK | カタログID   | ×     |
+| product_id  | references | FK | 製品ID   | ×     |
 | page_number  | bigint |  | ページNo   | ×     |
 | page_place_number  | bigint |  | ページプレイスNo   | ×     |
