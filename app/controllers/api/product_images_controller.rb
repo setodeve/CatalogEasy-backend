@@ -3,7 +3,8 @@
 module Api
   class ProductImagesController < ApplicationController
     def index
-      render json: ProductImage.all
+      @product_images = ProductImage.all
+      render :index, formats: :json
     end
 
     def create
