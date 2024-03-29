@@ -7,6 +7,7 @@ class ProductImage < ApplicationRecord
 
   def image_url
     return nil unless image.attached?
+
     urls = []
     image.each do |i|
       urls << url_for(i)
