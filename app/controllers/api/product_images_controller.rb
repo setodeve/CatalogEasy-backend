@@ -4,7 +4,15 @@ module Api
   class ProductImagesController < ApplicationController
     def index
       @product_images = ProductImage.all
-      render :index, formats: :json
+      image_url = {}
+      @product_images.each do |product_image|
+        if product_image.image_url.present?
+          id = encrypt(product_image.id)
+          image_url[id]=(product_image.image_url)
+        end
+      end
+      # render :index, formats: :json
+      render json: image_url, status: :ok
     end
 
     def create
