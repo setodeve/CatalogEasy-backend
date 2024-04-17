@@ -2,7 +2,7 @@
 
 class ProductImage < ApplicationRecord
   include Rails.application.routes.url_helpers
-
+  belongs_to :product
   has_many_attached :image
 
   def image_url
