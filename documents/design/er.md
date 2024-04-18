@@ -1,6 +1,8 @@
 ```mermaid
 erDiagram
     User ||--o{ Catalog : "has many"
+    User ||--o{ Product : "has many"
+    User ||--o{ ProductImage : "has many"
     Template ||--o{ CatalogSection : "has many"
     Catalog ||--o{ CatalogSection : "has many"
     Product ||--o{ CatalogSection : "has many"
@@ -27,6 +29,7 @@ erDiagram
         bigint trade_price "卸価格"
         bigint retail_price "小売価格"
         string remark "備考"
+        bigint user_id FK "ユーザーID"
     }
     
     ProductImage {
@@ -53,5 +56,4 @@ erDiagram
         bigint product_image_id FK "画像ID"
         string image_key "画像キー"
     }
-
 ```
