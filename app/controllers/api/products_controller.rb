@@ -7,12 +7,7 @@ class Api::ProductsController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       @products = product_params.map do |product_param|
-        product = build_product(product_param)
-        if product&.save
-          image_key = find_image_key(product_param)
-          create_image_assignments(product, image_key) if image_key.present?
-        end
-        product
+        create_product_with_images(product_param)
       end
       render json: @products, status: :created
     rescue ActiveRecord::RecordInvalid => e
@@ -23,54 +18,46 @@ class Api::ProductsController < ApplicationController
   private
 
   def product_params
-    params.require(:products).map { |product| product.permit(:name, :size, :trade_price, :retail_price, :remark, :image, :product_image_id) }
+    params.require(:products).map do |product|
+      product.permit(:name, :size, :trade_price, :retail_price, :remark, :image, :product_image_id)
+    end
+  end
+
+  def create_product_with_images(params)
+    product = build_product(params)
+    return nil unless product&.save
+
+    if params[:image].present? && params[:product_image_id].present?
+      image_key = find_image_key(params)
+      create_image_assignments(product, image_key) if image_key
+    end
+    product
   end
 
   def build_product(params)
-    tmp = image_exist?(params)
-    return nil unless tmp[:product_image_id].present?
-    Product.new(tmp.except(:image, :image_key, :product_image_id))
-  end
-
-  def image_exist?(params)
-    image_info = find_image_chunck(params)
-    product_image_id = image_info[:product_image_id]
-    product_image = image_info[:product_image]
-
-    if product_image
-      params.merge!(image_key: find_image_key(params))
-    else
-      params.merge!(product_image_id: nil, image_key: nil)
-    end
-  end
-
-  def find_image_chunck(params)
     product_image_id = decrypt(params[:product_image_id])
     product_image = ProductImage.find_by(id: product_image_id)
-    return {product_image_id: product_image_id, product_image: product_image}
+
+    return nil unless product_image && image_matches?(product_image, params[:image])
+
+    Product.new(params.except(:image, :product_image_id))
   end
 
-  def find_image(product_image, image_url)
-    product_image.image.all.each do |image|
-      if url_for(image) == image_url
-        return image
-      end
-    end
-    return nil
+  def image_matches?(product_image, image_url)
+    product_image.image.all.any? { |image| url_for(image) == image_url }
   end
 
   def find_image_key(params)
-    image_info = find_image_chunck(params)
-    product_image = image_info[:product_image]
-    image = find_image(product_image, params[:image])
-    if image
-      return image.key
-    end
-    return nil
+    product_image_id = decrypt(params[:product_image_id])
+    product_image = ProductImage.find_by(id: product_image_id)
+
+    image = product_image.image.all.find { |img| url_for(img) == params[:image] }
+    image&.key
   end
 
   def create_image_assignments(product, image_key)
-    product.image_assignments.create!(product_image_id: find_image_id_by_key(image_key), image_key: image_key)
+    image_id = find_image_id_by_key(image_key)
+    product.image_assignments.create!(product_image_id: image_id, image_key: image_key) if image_id
   end
 
   def find_image_id_by_key(key)
