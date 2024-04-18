@@ -1,9 +1,9 @@
 ```mermaid
 erDiagram
     User ||--o{ Catalog : "has many"
+    Template ||--o{ CatalogSection : "has many"
     Catalog ||--o{ CatalogSection : "has many"
     Product ||--o{ CatalogSection : "has many"
-    Template ||--o{ CatalogSection : "has many"
     Product ||--o{ ImageAssignment : "has many"
     ProductImage ||--o{ ImageAssignment : "has many"
     
