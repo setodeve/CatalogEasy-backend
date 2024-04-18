@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
+  include DeviseTokenAuth::Concerns::SetUserByToken
   include Rails.application.routes.url_helpers
   before_action :set_encryptor
+  before_action do
+    I18n.locale = :ja
+  end
 
   protected
   def set_encryptor
