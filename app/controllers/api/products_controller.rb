@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::ProductsController < ApplicationController
   def index
     @products = Product.all
@@ -39,7 +41,7 @@ class Api::ProductsController < ApplicationController
     product_image = ProductImage.find_by(id: product_image_id)
 
     return nil unless product_image && image_matches?(product_image, params[:image])
-
+    params[:user_id] = 1
     Product.new(params.except(:image, :product_image_id))
   end
 
