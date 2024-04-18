@@ -9,7 +9,8 @@ class Api::ProductsController < ApplicationController
       @products = product_params.map do |product_param|
         product = build_product(product_param)
         if product&.save
-          create_image_assignments(product, product_param[:image_key]) if product_param[:image_key].present?
+          image_key = find_image_key(product_param)
+          create_image_assignments(product, image_key) if image_key.present?
         end
         product
       end
@@ -32,22 +33,40 @@ class Api::ProductsController < ApplicationController
   end
 
   def image_exist?(params)
-    product_image_id = decrypt(params[:product_image_id])
-    product_image = ProductImage.find_by(id: product_image_id)
+    image_info = find_image_chunck(params)
+    product_image_id = image_info[:product_image_id]
+    product_image = image_info[:product_image]
 
-    if product_image && image_matches?(product_image, params[:image])
-      params.merge!(product_image_id: product_image_id, image_key: find_image_key(params[:image]))
+    if product_image
+      params.merge!(image_key: find_image_key(params))
     else
       params.merge!(product_image_id: nil, image_key: nil)
     end
   end
 
-  def image_matches?(product_image, image_url)
-    product_image.image.all.any? { |image| url_for(image) == image_url }
+  def find_image_chunck(params)
+    product_image_id = decrypt(params[:product_image_id])
+    product_image = ProductImage.find_by(id: product_image_id)
+    return {product_image_id: product_image_id, product_image: product_image}
   end
 
-  def find_image_key(image_url)
-    ActiveStorage::Attachment.find_by(blob: ActiveStorage::Blob.find_signed(image_url))&.blob&.key
+  def find_image(product_image, image_url)
+    product_image.image.all.each do |image|
+      if url_for(image) == image_url
+        return image
+      end
+    end
+    return nil
+  end
+
+  def find_image_key(params)
+    image_info = find_image_chunck(params)
+    product_image = image_info[:product_image]
+    image = find_image(product_image, params[:image])
+    if image
+      return image.key
+    end
+    return nil
   end
 
   def create_image_assignments(product, image_key)
