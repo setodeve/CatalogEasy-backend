@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::ProductsController < ApplicationController
+  before_action :authenticate_api_user!, only: [:index,:create]
+
   def index
     @products = Product.all
     render :index, formats: :json

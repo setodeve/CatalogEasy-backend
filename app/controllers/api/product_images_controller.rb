@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::ProductImagesController < ApplicationController
+  before_action :authenticate_api_user!, only: [:index,:create]
+
   def index
     @product_images = ProductImage.all
     image_url = {}
