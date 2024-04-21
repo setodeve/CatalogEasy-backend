@@ -34,6 +34,7 @@ erDiagram
     
     ProductImage {
         bigint id PK "画像ID"
+        bigint user_id FK "ユーザーID"
     }
     
     Template {

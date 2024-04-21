@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class Api::ProductImagesController < ApplicationController
+  before_action :authenticate_api_user!, only: [:index,:create]
+
   def index
-    @product_images = ProductImage.all
+    @product_images = ProductImage.eager_load(:user).where(users: {id: current_api_user.id})
     image_url = {}
     @product_images.each do |product_image|
       if product_image.image_url.present?
@@ -15,8 +17,7 @@ class Api::ProductImagesController < ApplicationController
   end
 
   def create
-    @user_id = 1
-    @product_image = ProductImage.new(user_id: @user_id)
+    @product_image = ProductImage.new(user_id: current_api_user.id)
     images = params[:image]
     images&.each do |image|
       @product_image.image.attach(image)

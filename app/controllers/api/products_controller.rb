@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class Api::ProductsController < ApplicationController
+  before_action :authenticate_api_user!, only: [:index,:create]
+
   def index
-    @products = Product.all
+    @products = Product.eager_load(:user).where(users: {id: current_api_user.id})
     render :index, formats: :json
   end
 
@@ -11,6 +13,15 @@ class Api::ProductsController < ApplicationController
       @products = product_params.map do |product_param|
         create_product_with_images(product_param)
       end
+      
+      @catalog = Catalog.new(name: "カタログ", user_id: current_api_user.id)
+
+      if @catalog.save
+        @products.each do |product|
+          create_product_and_section(@catalog, product)
+        end
+      end
+
       render json: @products, status: :created
     rescue ActiveRecord::RecordInvalid => e
       render json: { errors: e.message }, status: :unprocessable_entity
@@ -19,9 +30,13 @@ class Api::ProductsController < ApplicationController
 
   private
 
+  def create_product_and_section(catalog, product)
+    CatalogSection.create(catalog_id: catalog.id, product_id: product.id, template_id: 1, page_number: 0, page_place_number: 0)
+  end
+
   def product_params
     params.require(:products).map do |product|
-      product.permit(:name, :size, :trade_price, :retail_price, :remark, :image, :product_image_id)
+      product.permit(:name, :size, :trade_price, :retail_price, :remark, :image, :product_image_id).merge(user_id: current_api_user.id)
     end
   end
 
@@ -33,6 +48,7 @@ class Api::ProductsController < ApplicationController
       image_key = find_image_key(params)
       create_image_assignments(product, image_key) if image_key
     end
+
     product
   end
 
@@ -41,7 +57,7 @@ class Api::ProductsController < ApplicationController
     product_image = ProductImage.find_by(id: product_image_id)
 
     return nil unless product_image && image_matches?(product_image, params[:image])
-    params[:user_id] = 1
+    
     Product.new(params.except(:image, :product_image_id))
   end
 
@@ -59,7 +75,7 @@ class Api::ProductsController < ApplicationController
 
   def create_image_assignments(product, image_key)
     image_id = find_image_id_by_key(image_key)
-    product.image_assignments.create!(product_image_id: image_id, image_key: image_key) if image_id
+    product.image_assignments.create!(product_id: product.id, product_image_id: image_id, image_key: image_key) if image_id
   end
 
   def find_image_id_by_key(key)
