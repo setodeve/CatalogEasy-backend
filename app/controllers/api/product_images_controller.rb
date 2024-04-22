@@ -12,7 +12,6 @@ class Api::ProductImagesController < ApplicationController
         image_url[id]=(product_image.image_url)
       end
     end
-    # render :index, formats: :json
     render json: image_url, status: :ok
   end
 

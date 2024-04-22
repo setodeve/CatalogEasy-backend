@@ -9,16 +9,19 @@ class ApplicationController < ActionController::API
   end
 
   protected
+
   def set_encryptor
-    # secret_key = Rails.application.credentials.secret_key_base[0, 32]
-    @encryptor = ActiveSupport::MessageEncryptor.new(Base64.decode64(ENV['APP_HASH_SALT']))
+    secret_key = Base64.urlsafe_decode64(ENV['APP_HASH_SALT'])
+    @encryptor = ActiveSupport::MessageEncryptor.new(secret_key[0, 32])
   end
 
   def encrypt(data)
-    @encryptor.encrypt_and_sign(data)
+    encrypted_data = @encryptor.encrypt_and_sign(data)
+    Base64.urlsafe_encode64(encrypted_data)
   end
 
   def decrypt(data)
-    @encryptor.decrypt_and_verify(data)
+    decoded_encrypted_data = Base64.urlsafe_decode64(data)
+    @encryptor.decrypt_and_verify(decoded_encrypted_data)
   end
 end
