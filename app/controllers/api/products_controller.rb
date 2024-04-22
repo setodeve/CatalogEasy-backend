@@ -5,7 +5,7 @@ class Api::ProductsController < ApplicationController
 
   def index
     @products = Product.eager_load(:user).where(users: {id: current_api_user.id})
-    render :index, formats: :json
+    render @products, formats: :json
   end
 
   def create
