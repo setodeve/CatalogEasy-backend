@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CatalogSection < ApplicationRecord
   belongs_to :catalog
   belongs_to :product

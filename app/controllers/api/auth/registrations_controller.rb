@@ -1,17 +1,23 @@
-class Api::Auth::RegistrationsController < DeviseTokenAuth::RegistrationsController
-  after_action :set_token_info, only: [:create]
+# frozen_string_literal: true
 
-  private
+module Api
+  module Auth
+    class RegistrationsController < DeviseTokenAuth::RegistrationsController
+      after_action :set_token_info, only: [:create]
 
-  def sign_up_params
-    params.permit(:email, :password, :password_confirmation, :name)
-  end
+      private
 
-  def set_token_info
-    return unless @resource.persisted?
+      def sign_up_params
+        params.permit(:email, :password, :password_confirmation, :name)
+      end
 
-    token = @resource.create_new_auth_token
-    response.set_header('access-token', token['access-token'])
-    response.set_header('client', token['client'])
+      def set_token_info
+        return unless @resource.persisted?
+
+        token = @resource.create_new_auth_token
+        response.set_header('access-token', token['access-token'])
+        response.set_header('client', token['client'])
+      end
+    end
   end
 end

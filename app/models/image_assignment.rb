@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImageAssignment < ApplicationRecord
   belongs_to :product
   belongs_to :product_image
