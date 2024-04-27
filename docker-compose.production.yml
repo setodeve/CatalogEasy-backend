@@ -1,0 +1,37 @@
+version: '3'
+services:
+  back:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    command: bundle exec puma -C config/puma.rb -e production
+    volumes:
+      - .:/app
+      - public-data:/app/public
+      - tmp-data:/app/tmp
+      - log-data:/app/log
+    ports:
+      - 8080:8080
+    environment:
+      TZ: Asia/Tokyo
+    env_file:
+      - .env.production.local
+
+  web:
+    build:
+      context: containers/nginx
+    volumes:
+      - public-data:/app/public
+      - tmp-data:/app/tmp
+    ports:
+      - 80:80
+    depends_on:
+      - back
+
+volumes:
+  public-data:
+  tmp-data:
+  log-data:
+  
