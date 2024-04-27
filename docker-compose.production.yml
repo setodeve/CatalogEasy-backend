@@ -3,7 +3,7 @@ services:
   back:
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.production
     stdin_open: true
     tty: true
     command: bundle exec puma -C config/puma.rb -e production
@@ -21,7 +21,7 @@ services:
 
   web:
     build:
-      context: containers/nginx
+      context: nginx
     volumes:
       - public-data:/app/public
       - tmp-data:/app/tmp
