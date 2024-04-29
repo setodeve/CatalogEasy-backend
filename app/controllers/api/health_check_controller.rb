@@ -1,7 +1,7 @@
 module Api
     class HealthCheckController < ApplicationController
       def index
-        head 200
+        render json: { message: "Success Health Check!" }, status: :ok
       end
     end
 end
