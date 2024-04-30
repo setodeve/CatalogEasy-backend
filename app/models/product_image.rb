@@ -11,7 +11,8 @@ class ProductImage < ApplicationRecord
 
     urls = []
     image.each do |i|
-      urls << url_for(i)
+      puts "image: #{i}"
+      urls << rails_blob_url(i)
     end
     urls
   end
