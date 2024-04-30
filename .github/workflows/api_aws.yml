@@ -35,7 +35,8 @@ jobs:
         sed -i -e 's|RDS_DB_PORT|${{ secrets.RDS_DB_PORT }}|g' .aws/task-definition.json
         sed -i -e 's|RDS_DB_USERNAME|${{ secrets.RDS_DB_USERNAME }}|g' .aws/task-definition.json
         sed -i -e 's|SECRET_RAILS_MASTER_KEY|${{ secrets.SECRET_RAILS_MASTER_KEY }}|g' .aws/task-definition.json
-      
+        sed -i -e 's|AWS_IMAGE_URI|${{ secrets.AWS_IMAGE_URI }}|g' .aws/task-definition.json
+
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
