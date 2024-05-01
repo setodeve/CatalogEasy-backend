@@ -23,9 +23,15 @@ jobs:
     steps:
       - name: Check for commit message
         id: filter
-        run: echo "::set-output name=is_deploy::$(git log -1 --pretty=%B | grep -i '@' && echo 'true' || echo 'false')"
+        run: |
+          if git log -1 --pretty=%B | grep -iq '@'; then
+            echo "is_deploy=true" >> $GITHUB_ENV
+          else
+            echo "is_deploy=false" >> $GITHUB_ENV
 
   deploy-rails:
+    needs: check_commit_message
+    if: ${{ env.is_deploy == 'true' }}
     runs-on: ubuntu-latest
     environment: production
 
