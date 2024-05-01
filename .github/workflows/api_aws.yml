@@ -16,6 +16,15 @@ permissions:
   contents: read
 
 jobs:
+  check_commit_message:
+    runs-on: ubuntu-latest
+    outputs:
+      is_deploy_commit: ${{ steps.filter.outputs.is_deploy }}
+    steps:
+      - name: Check for commit message
+        id: filter
+        run: echo "::set-output name=is_deploy::$(git log -1 --pretty=%B | grep -i '@' && echo 'true' || echo 'false')"
+
   deploy-rails:
     runs-on: ubuntu-latest
     environment: production
