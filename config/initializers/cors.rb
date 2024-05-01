@@ -2,11 +2,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    if "production" == Rails.env
-      origins 'https://app.catlogeasy.site/'
-    else
-      origins '*'
-    end
+    origins '*'
 
     resource '*',
              headers: :any,
