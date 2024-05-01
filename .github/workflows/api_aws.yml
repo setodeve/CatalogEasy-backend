@@ -57,21 +57,21 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION_BACKEND }}
-        container-name: ${{ env.CONTAINER_NAME_RAILS }}
-        image: ${{ steps.build-image.outputs.image }}
+    # - name: Fill in the new image ID in the Amazon ECS task definition
+    #   id: task-def
+    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+    #   with:
+    #     task-definition: ${{ env.ECS_TASK_DEFINITION_BACKEND }}
+    #     container-name: ${{ env.CONTAINER_NAME_RAILS }}
+    #     image: ${{ steps.build-image.outputs.image }}
 
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ env.ECS_SERVICE_BACKEND }}
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
+    # - name: Deploy Amazon ECS task definition
+    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+    #   with:
+    #     task-definition: ${{ steps.task-def.outputs.task-definition }}
+    #     service: ${{ env.ECS_SERVICE_BACKEND }}
+    #     cluster: ${{ env.ECS_CLUSTER }}
+    #     wait-for-service-stability: true
 
     - name: Update service
       run: |
