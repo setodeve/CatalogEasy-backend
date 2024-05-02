@@ -1,0 +1,10 @@
+pre-commit:
+  piped: true
+  commands:
+    1_docker-compose:
+      root: .
+      run: docker compose up -d back
+    2_exec_rubocop:
+      glob: "*.{rb,rake}"
+      exclude: "application.rb|routes.rb"
+      run: docker compose exec back bundle exec rubocop -a {staged_files}
