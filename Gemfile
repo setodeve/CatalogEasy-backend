@@ -22,6 +22,8 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
+  gem 'factory_bot_rails'
+  gem 'rspec-rails', '~> 6.1.0'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
 end
