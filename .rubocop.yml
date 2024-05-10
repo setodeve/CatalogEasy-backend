@@ -12,3 +12,5 @@ Metrics/PerceivedComplexity:
   Max: 15 
 Layout/LineLength:
   Max: 200
+Metrics/AbcSize:
+  Max: 30

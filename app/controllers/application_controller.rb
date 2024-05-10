@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
   protected
 
   def set_encryptor
-    secret_key = Base64.urlsafe_decode64(Rails.application.credentials.salt)
+    secret_key = Rails.application.credentials.salt
     @encryptor = ActiveSupport::MessageEncryptor.new(secret_key[0, 32])
   end
 
