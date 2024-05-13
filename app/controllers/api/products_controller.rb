@@ -14,10 +14,8 @@ module Api
         @products = product_params.map do |product_param|
           create_product_with_images(product_param) unless product_param[:image].nil?
         end
-
         @catalog = Catalog.new(name: 'カタログ', user_id: current_api_user.id)
-
-        if @catalog.save
+        if (@products.all?(&:nil?) == false) && @catalog.save
           @products.each do |product|
             create_product_and_section(@catalog, product) if !@catalog.nil? && !product.nil?
           end
