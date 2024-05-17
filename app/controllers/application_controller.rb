@@ -9,8 +9,8 @@ class ApplicationController < ActionController::API
   end
   before_action :check_xhr_header
 
-
   protected
+
   def check_xhr_header
     return if request.xhr?
 
