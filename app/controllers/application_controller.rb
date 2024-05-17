@@ -7,8 +7,15 @@ class ApplicationController < ActionController::API
   before_action do
     I18n.locale = :ja
   end
+  before_action :check_xhr_header
 
   protected
+
+  def check_xhr_header
+    return if request.xhr?
+
+    render json: { error: 'forbidden' }, status: :forbidden
+  end
 
   def set_encryptor
     secret_key = Rails.application.credentials.salt
