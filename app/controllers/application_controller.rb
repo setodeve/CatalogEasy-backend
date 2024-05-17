@@ -9,14 +9,13 @@ class ApplicationController < ActionController::API
   end
   before_action :check_xhr_header
 
- private
+
+  protected
   def check_xhr_header
     return if request.xhr?
 
     render json: { error: 'forbidden' }, status: :forbidden
   end
-
-  protected
 
   def set_encryptor
     secret_key = Rails.application.credentials.salt
