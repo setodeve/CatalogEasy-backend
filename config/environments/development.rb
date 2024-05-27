@@ -65,4 +65,10 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
   Rails.application.routes.default_url_options[:host] = 'localhost'
   Rails.application.routes.default_url_options[:port] = 8080
+
+  Bullet.enable = true
+  Bullet.alert = true
+  Bullet.bullet_logger = true
+  Bullet.console = true
+  Bullet.rails_logger = true
 end
