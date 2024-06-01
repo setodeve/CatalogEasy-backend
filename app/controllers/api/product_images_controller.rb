@@ -5,7 +5,7 @@ module Api
     before_action :authenticate_api_user!, only: %i[index create]
 
     def index
-      @product_images = ProductImage.eager_load(:user).where(users: { id: current_api_user.id }).includes(:image_attachments)
+      @product_images = ProductImage.eager_load(:user, :image_attachments).where(users: { id: current_api_user.id })
       image_url = {}
       @product_images.each do |product_image|
         if product_image.image_url.present?
