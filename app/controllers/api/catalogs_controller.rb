@@ -16,16 +16,26 @@ module Api
     def create; end
 
     def show
-      tmp = Catalog.find(decrypt(params[:id]))
-      return render json: { 'products' => [] } if tmp.user_id != current_api_user.id
-
-      @catalog = []
-      tmp.products.each do |t|
-        image_key = t.image_assignments.first.image_key
-        image_url = url_for(ActiveStorage::Blob.find_by(key: image_key))
-        @catalog << t.as_json.merge(image: image_url)
+      catalog_id = decrypt(params[:id])
+      user_id = current_api_user.id
+    
+      tmp = Catalog.eager_load(
+        :user,
+        products: {
+          image_assignments: {
+            product_image: { image_attachments: :blob }
+          }
+        }
+      ).where(id: catalog_id, users: { id: user_id }).load.first
+    
+      return render json: { 'products' => [] } if tmp.nil?
+    
+      @catalog = tmp.products.map do |product|
+        image_assignment = product.image_assignments.first
+        image_url = image_assignment&.product_image&.image&.any? ? url_for(image_assignment.product_image.image.first) : nil
+        product.as_json.merge(image: image_url)
       end
       render json: @catalog
-    end
+    end    
   end
 end
