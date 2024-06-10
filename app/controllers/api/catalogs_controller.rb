@@ -26,6 +26,6 @@ module Api
         @catalog << t.as_json.merge(image: image_url)
       end
       render json: @catalog
-    end    
+    end
   end
 end
