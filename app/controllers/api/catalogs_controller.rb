@@ -40,7 +40,7 @@ module Api
     private
 
     def catalog_params
-      params.require(:catalog).permit(:id, :name)
+      params.require(:catalog).permit(:name)
     end
   end
 end
