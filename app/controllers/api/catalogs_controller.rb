@@ -13,8 +13,8 @@ module Api
       render json: @catalogs
     end
 
-    def update 
-      @catalog = Catalog.find((params[:id]))
+    def update
+      @catalog = Catalog.find(params[:id])
       if @catalog.update(catalog_params)
         render json: @catalog, status: :ok
       else
@@ -37,7 +37,8 @@ module Api
       render json: @catalog
     end
 
-  private
+    private
+
     def catalog_params
       params.require(:catalog).permit(:id, :name)
     end
