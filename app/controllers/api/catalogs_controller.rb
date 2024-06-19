@@ -2,7 +2,7 @@
 
 module Api
   class CatalogsController < ApplicationController
-    before_action :authenticate_api_user!, only: %i[index create show]
+    before_action :authenticate_api_user!, only: %i[index create update show]
     def index
       tmp = Catalog.eager_load(:user).where(users: { id: current_api_user.id })
       @catalogs = {}
@@ -11,6 +11,15 @@ module Api
         @catalogs[id] = t
       end
       render json: @catalogs
+    end
+
+    def update
+      @catalog = Catalog.find(params[:id])
+      if @catalog.update(catalog_params)
+        render json: @catalog, status: :ok
+      else
+        render json: @catalog.errors, status: :unprocessable_entity
+      end
     end
 
     def create; end
@@ -26,6 +35,12 @@ module Api
         @catalog << t.as_json.merge(image: image_url)
       end
       render json: @catalog
+    end
+
+    private
+
+    def catalog_params
+      params.require(:catalog).permit(:name)
     end
   end
 end
